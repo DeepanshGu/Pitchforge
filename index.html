@@ -4,59 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PitchForge | AI Pitch Deck Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
-        /* This makes your site look like a real app */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        h1 { color: #333; margin-bottom: 10px; }
-        p { color: #666; margin-bottom: 30px; }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover { background-color: #0056b3; }
-        #status { margin-top: 20px; font-size: 14px; }
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
+        body { padding: 50px; }
+        .container { max-width: 600px; }
+        #status { margin-top: 20px; }
     </style>
 </head>
 <body>
-
-    <div class="container">
+    <main class="container">
         <h1>PitchForge</h1>
         <p>Enter your startup idea and we'll generate a professional pitch deck for you.</p>
 
@@ -66,7 +22,7 @@
         </form>
 
         <div id="status"></div>
-    </div>
+    </main>
 
     <script>
         const form = document.getElementById("pitch-form");
@@ -74,8 +30,7 @@
         const button = document.getElementById("submit-button");
 
         form.addEventListener("submit", async (e) => {
-            e.preventDefault(); // This stops the page from reloading
-            
+            e.preventDefault();
             button.disabled = true;
             button.innerText = "Sending to AI...";
             status.innerHTML = "Working on it...";
@@ -86,29 +41,21 @@
             try {
                 const response = await fetch(form.action, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                    },
+                    headers: { "Content-Type": "application/json", Accept: "application/json" },
                     body: JSON.stringify(data),
                 });
 
                 if (response.ok) {
-                    status.className = "success";
-                    status.innerHTML = "✨ Idea saved! AI is generating your deck now...";
+                    status.innerHTML = "✨ Success! Check Supabase.";
                     form.reset();
-                } else {
-                    throw new Error();
-                }
+                } else { throw new Error(); }
             } catch (error) {
-                status.className = "error";
-                status.innerHTML = "Oops! Something went wrong. Please try again.";
+                status.innerHTML = "Error. Please try again.";
             } finally {
                 button.disabled = false;
                 button.innerText = "Generate My Deck";
             }
         });
     </script>
-
 </body>
 </html>
